@@ -44,3 +44,13 @@ ul li:hover{
 	border: 1px solid black;
 	margin: 20px;
 }
+
+.page input, .page span {
+	position: absolute;
+}
+
+.signBox {
+	width: 100px;
+	height: 50px;
+	background-color: grey;
+}
