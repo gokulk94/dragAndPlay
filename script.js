@@ -19,8 +19,8 @@ function dragon(selector) {
   });
 
   function handler(e) {
-    var x = currentElPosX + (e.clientX - dragStartX) - originOffSetX;
-    var y = currentElPosY + (e.clientY - dragStartY) - originOffSetY;
+    var x = currentElPosX + (e.clientX - dragStartX) - originOffSetX + window.scrollX;
+    var y = currentElPosY + (e.clientY - dragStartY) - originOffSetY + window.scrollY;
     el.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
   }
 
