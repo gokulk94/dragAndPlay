@@ -38,7 +38,7 @@ ul li:hover{
 	padding: 10px 0px 0px 10px;
 }
 
-.page {
+.page, .page1 {
 	width: 595px;
 	height: 842px;
 	border: 1px solid black;
@@ -52,8 +52,14 @@ ul li:hover{
 	position: absolute;
 }
 
+.page1 input, .page1 span {
+	position: absolute;
+}
+
+
 .signBox {
 	width: 100px;
 	height: 50px;
 	background-color: grey;
+	display: inline-block;
 }

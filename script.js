@@ -3,7 +3,7 @@
  * Just wanted to learn mouse events and this is a good start... :)
 */
 
-function dragon(selector) {
+function dragon(selector,isdragged) {
   var el = selector;
   var dragStartX, dragStartY, currentElPosX, currentElPosY;
   var originOffSetX = el.offsetLeft,
@@ -19,13 +19,16 @@ function dragon(selector) {
   });
 
   function handler(e) {
-    var x = currentElPosX + (e.clientX - dragStartX) - originOffSetX + window.scrollX;
-    var y = currentElPosY + (e.clientY - dragStartY) - originOffSetY + window.scrollY;
-    el.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
+    if(isdragged) {
+      var x = currentElPosX + (e.clientX - dragStartX) - originOffSetX + window.scrollX;
+      var y = currentElPosY + (e.clientY - dragStartY) - originOffSetY + window.scrollY;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
+    }
   }
 
   function removeEvents(e) {
-    var container = document.querySelector('.page');
+    console.log(e.target);
+    var container = e.target;
     var contB = container.getBoundingClientRect();
 
     /*
@@ -33,7 +36,7 @@ function dragon(selector) {
       Yet to decide on how to structure this
     */
 
-    if (e.clientX > contB.left && e.clientY > contB.top && el.tagName !== 'INPUT' && el.tagName !== 'SPAN' && e.clientX < (contB.width + contB.left)) {
+    if (container.parentNode.className == 'page_wrapper' && e.clientX > contB.left && e.clientY > contB.top && el.tagName !== 'INPUT' && el.tagName !== 'SPAN' && e.clientX < (contB.width + contB.left)) {
       insertItem(el.getAttribute('data-purpose'), e.clientX, e.clientY, contB, el, container);
     }
     document.removeEventListener('mousemove', handler);
@@ -53,25 +56,26 @@ function insertItem(purpose, clientX, clientY, clientRect, el, container) {
   }
   div.style.transform = `translate3d(${clientX - clientRect.left}px, ${clientY - clientRect.top}px, 0px)`;
   container.appendChild(div);
-  dragon(div);
+  dragon(div,true);
   el.style.transform = `translate3d(0px, 0px, 0px)`;
 }
 
 var draggableElements = document.querySelectorAll('.sideSelector ul li');
 
 draggableElements.forEach(function (item) {
-  new dragon(item);
+  new dragon(item,false);
 });
 
 function sendData() {
-  var content = document.querySelectorAll('.page *');
+  var content = document.querySelectorAll('.page_wrapper * *');
   var coordinates = [];
   content.forEach(function(item) {
     var t = item.style.transform.split('(')[1].split(',');
     coordinates.push({
       purpose: item.className,
       coordinateX: t[0],
-      coordinateY: t[1]
+      coordinateY: t[1],
+      parent: item.parentNode.className
     });
   });
   console.log(coordinates);
